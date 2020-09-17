@@ -15,15 +15,15 @@ LENGTH = (
 )
 
 # Create your models here.
-class Studio(models.Model):
+class VoiceActor(models.Model):
     name = models.CharField(max_length=50)
-    location = models.CharField(max_length=50)
+    age = models.CharField(max_length=20)
     
     def __str__(self):
         return self.name
     
     def get_absolute_url(self):
-        return reverse("studios_detail", kwargs={"pk": self.id})
+        return reverse('voice_actors_detail', kwargs={"pk": self.id})
     
 
 class Game(models.Model):
@@ -31,6 +31,7 @@ class Game(models.Model):
     rating = models.CharField(max_length=100)
     description = models.TextField(max_length=250)
     release_year = models.IntegerField()
+    voice_actors = models.ManyToManyField(VoiceActor)
 
     def __str__(self):
         return self.name

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Voice Actor List</h1>
+
+{% for voice_actor in voiceactor_list %}
+  <a href="{% url 'voice_actors_detail' voice_actor.id %}">
+    <div class="card">
+        <div class="card-content">
+            <span class="card-title">{{ voice_actor.name }}</span>
+            <p>Age: {{ voice_actor.age }}</p>
+        </div>
+    </div>
+  </a>
+{% endfor %}
+
+{% endblock %}

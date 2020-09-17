@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
-from .models import Game, Studio
+from .models import Game, VoiceActor
 from .forms import PlaytimeForm
 
 
@@ -21,10 +21,12 @@ def games_index(request):
 
 def games_detail(request, game_id):
     game = Game.objects.get(id=game_id)
+    voice_actors_game_doesnt_have = VoiceActor.objects.exclude(id__in = game.voice_actors.all().values_list('id'))
     playtime_form = PlaytimeForm()
     return render(request, 'games/detail.html', {
         'game': game, 
-        'playtime_form': playtime_form
+        'playtime_form': playtime_form,
+        'voice_actors': voice_actors_game_doesnt_have
     })
 
 
@@ -51,20 +53,25 @@ def add_playtime(request, game_id):
     new_playtime.save()
   return redirect('detail', game_id=game_id)
 
-class StudioList(ListView):
-  model = Studio
+def assoc_voice_actor(request, game_id, voice_actor_id):
+  # Note that you can pass a toy's id instead of the whole object
+  Game.objects.get(id=game_id).voice_actors.add(voice_actor_id)
+  return redirect('detail', game_id=game_id)
 
-class StudioDetail(DetailView):
-  model = Studio
+class VoiceActorList(ListView):
+  model = VoiceActor
 
-class StudioCreate(CreateView):
-  model = Studio
+class VoiceActorDetail(DetailView):
+  model = VoiceActor
+
+class VoiceActorCreate(CreateView):
+  model = VoiceActor
   fields = '__all__'
 
-class StudioUpdate(UpdateView):
-  model = Studio
-  fields = ['name', 'location']
+class VoiceActorUpdate(UpdateView):
+  model = VoiceActor
+  fields = ['name', 'age']
 
-class StudioDelete(DeleteView):
-  model = Studio
-  success_url = '/studios/'
+class VoiceActorDelete(DeleteView):
+  model = VoiceActor
+  success_url = '/voice_actors/'
