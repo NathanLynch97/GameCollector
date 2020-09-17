@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from datetime import date
 
 LENGTH = (
     ('1', '1 hour'),
@@ -14,7 +15,16 @@ LENGTH = (
 )
 
 # Create your models here.
-
+class Studio(models.Model):
+    name = models.CharField(max_length=50)
+    location = models.CharField(max_length=50)
+    
+    def __str__(self):
+        return self.name
+    
+    def get_absolute_url(self):
+        return reverse("studios_detail", kwargs={"pk": self.id})
+    
 
 class Game(models.Model):
     name = models.CharField(max_length=100)
@@ -27,6 +37,9 @@ class Game(models.Model):
 
     def get_absolute_url(self):
         return reverse('detail', kwargs={'game_id': self.id})
+    
+    def played_today(self):
+        return self.playtime_set.filter(last_played=date.today()).count() >= 1
 
 
 class Playtime(models.Model):

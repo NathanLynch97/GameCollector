@@ -24,6 +24,12 @@
       {{ playtime_form.as_p }}
       <input type="submit" class="btn" value="Add Playtime">
     </form>
+    <br>
+    {% if game.played_today %}
+      <div class="card-panel teal-text center-align">You have played {{ game.name }} today</div>
+    {% else %}
+      <div class="card-panel red-text center-align">You might want to play {{ game.name }} today</div>
+    {% endif %}
     <table class="striped">
       <thead>
         <tr><th>Last Played</th><th>Time Played</th></tr>

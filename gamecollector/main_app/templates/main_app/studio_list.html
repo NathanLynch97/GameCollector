@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Studio List</h1>
+
+{% for studio in studio_list %}
+  <a href="{% url 'studios_detail' studio.id %}">
+    <div class="card">
+        <div class="card-content">
+            <span class="card-title">{{ studio.name }}</span>
+            <p>Studio: {{ studio.location }}</p>
+        </div>
+    </div>
+  </a>
+{% endfor %}
+
+{% endblock %}

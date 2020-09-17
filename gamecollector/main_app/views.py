@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from .models import Game
+from django.views.generic import ListView, DetailView
+from .models import Game, Studio
 from .forms import PlaytimeForm
 
 
@@ -49,3 +50,21 @@ def add_playtime(request, game_id):
     new_playtime.game_id = game_id
     new_playtime.save()
   return redirect('detail', game_id=game_id)
+
+class StudioList(ListView):
+  model = Studio
+
+class StudioDetail(DetailView):
+  model = Studio
+
+class StudioCreate(CreateView):
+  model = Studio
+  fields = '__all__'
+
+class StudioUpdate(UpdateView):
+  model = Studio
+  fields = ['name', 'location']
+
+class StudioDelete(DeleteView):
+  model = Studio
+  success_url = '/studios/'
